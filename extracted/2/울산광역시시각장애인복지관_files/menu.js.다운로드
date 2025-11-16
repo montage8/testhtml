@@ -1,0 +1,211 @@
+﻿document.addEventListener('DOMContentLoaded', function () {
+    const mql = window.matchMedia('(min-width: 1280px)');
+
+    // --- DESKTOP MENU LOGIC (새롭게 작성됨) ---
+    const desktopMenuItems = document.querySelectorAll('#desktop-menu > li.group');
+
+    // 메뉴를 열고 상태를 업데이트하는 함수
+    function openMenu(li) {
+        // 먼저 다른 모든 메뉴를 닫는다 (하나만 열리도록)
+        desktopMenuItems.forEach(item => {
+            if (item !== li) {
+                closeMenu(item);
+            }
+        });
+        
+        li.classList.add('desktop-open');
+        const button = li.querySelector('.submenu-button');
+        if (button) {
+            button.setAttribute('aria-expanded', 'true');
+        }
+    }
+
+    // 메뉴를 닫고 상태를 업데이트하는 함수
+    function closeMenu(li) {
+        li.classList.remove('desktop-open');
+        const button = li.querySelector('.submenu-button');
+        if (button) {
+            button.setAttribute('aria-expanded', 'false');
+        }
+    }
+
+    desktopMenuItems.forEach(li => {
+        // 마우스 호버 이벤트
+        li.addEventListener('mouseenter', () => openMenu(li));
+        li.addEventListener('mouseleave', () => closeMenu(li));
+
+        // 키보드 포커스 이벤트
+        li.addEventListener('focusin', () => openMenu(li));
+        li.addEventListener('focusout', (event) => {
+            // focusout 이벤트는 잠시 후에 처리해서,
+            // 포커스가 메뉴 아이템 내부의 다른 링크로 이동하는 것인지,
+            // 아니면 완전히 밖으로 나가는 것인지 확인할 시간을 줌.
+            setTimeout(() => {
+                if (!li.contains(document.activeElement)) {
+                    closeMenu(li);
+                }
+            }, 10); // 아주 짧은 지연
+        });
+    });
+
+     document.addEventListener('click', (event) => {
+        if (mql.matches) {
+            // 메뉴 영역 바깥을 클릭했는지 확인합니다.
+            if (!event.target.closest('#desktop-menu')) {
+                document.querySelectorAll('#desktop-menu li.group.desktop-open').forEach(li => {
+                    li.classList.remove('desktop-open');
+                    li.querySelector('.submenu-button')?.setAttribute('aria-expanded', 'false');
+                });
+            }
+        }
+    });
+
+    // --- MOBILE MENU LOGIC ---
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenuCloseButton = document.getElementById('mobile-menu-close-button');
+    const mobileMenuContainer = document.getElementById('main-menu-container');
+    const mobileMenuOverlay = document.getElementById('main-menu-overlay');
+    const mobileMenuPanel = document.getElementById('main-menu-panel');
+    const mobileSubmenuButtons = document.querySelectorAll('#main-menu-panel .submenu-button');
+
+    function openMobileMenu() {
+        document.body.style.overflow = 'hidden';
+        mobileMenuContainer.setAttribute('aria-hidden', 'false');
+        mobileMenuButton.setAttribute('aria-expanded', 'true');
+        mobileMenuOverlay.classList.remove('invisible', 'opacity-0');
+        mobileMenuPanel.classList.remove('-translate-x-full');
+        
+        // 포커스 트랩을 활성화하고, 닫기 버튼에 첫 포커스를 줍니다.
+        mobileMenuPanel.addEventListener('keydown', focusTrap);
+        mobileMenuCloseButton.focus();
+    }
+
+    function closeMobileMenu() {
+        document.body.style.overflow = '';
+        mobileMenuContainer.setAttribute('aria-hidden', 'true');
+        mobileMenuButton.setAttribute('aria-expanded', 'false');
+        mobileMenuPanel.classList.add('-translate-x-full');
+        mobileMenuOverlay.classList.add('opacity-0');
+        
+        setTimeout(() => {
+            mobileMenuOverlay.classList.add('invisible');
+        }, 300);
+
+        // 포커스 트랩을 비활성화하고, 메뉴 열기 버튼으로 포커스를 되돌려줍니다.
+        mobileMenuPanel.removeEventListener('keydown', focusTrap);
+        mobileMenuButton.focus();
+    }
+
+    mobileMenuButton.addEventListener('click', openMobileMenu);
+    mobileMenuCloseButton.addEventListener('click', closeMobileMenu);
+    mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+    mobileSubmenuButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const submenu = button.nextElementSibling;
+            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+            button.setAttribute('aria-expanded', !isExpanded);
+            submenu.classList.toggle('hidden');
+        });
+    });
+
+    // --- KEYBOARD FOCUS TRAP LOGIC (수정 및 추가됨) ---
+    function focusTrap(event) {
+        // 1. Esc 키를 누르면 메뉴를 닫습니다.
+        if (event.key === 'Escape') {
+            closeMobileMenu();
+            return;
+        }
+
+        // 2. Tab 키가 아니면 무시합니다.
+        if (event.key !== 'Tab') {
+            return;
+        }
+
+        // 3. 메뉴 패널 안에서 포커스가 가능한 모든 요소를 찾습니다.
+        //    (현재 화면에 보이는 요소만 선택하도록 합니다.)
+        const focusableElements = Array.from(
+            mobileMenuPanel.querySelectorAll('a[href]:not([disabled]), button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])')
+        ).filter(el => el.offsetParent !== null);
+
+        if (focusableElements.length === 0) {
+            event.preventDefault();
+            return;
+        }
+
+        const firstFocusableElement = focusableElements[0];
+        const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+        // 4. Shift + Tab 키를 처리합니다.
+        if (event.shiftKey) {
+            // 현재 포커스가 첫 번째 요소에 있다면, 마지막 요소로 보냅니다.
+            if (document.activeElement === firstFocusableElement) {
+                lastFocusableElement.focus();
+                event.preventDefault();
+            }
+        // 5. Tab 키만 눌렀을 때를 처리합니다.
+        } else {
+            // 현재 포커스가 마지막 요소에 있다면, 첫 번째 요소로 보냅니다.
+            if (document.activeElement === lastFocusableElement) {
+                firstFocusableElement.focus();
+                event.preventDefault();
+            }
+        }
+    }
+    
+    // --- 데스크톱 클릭 동작을 위한 스타일 (이전과 동일) ---
+    const style = document.createElement('style');
+    style.textContent = `
+        .group.desktop-open > div[role="menu"] {
+            visibility: visible;
+            opacity: 1;
+        }
+    `;
+    document.head.append(style);
+
+
+    // 사이드 배너
+    const sideBanner = document.getElementById('side-banner');
+    
+    // 배너가 존재하지 않으면 스크립트 실행 중단
+    if (!sideBanner) {
+        return;
+    }
+
+    const mainContent = document.querySelector('#wrap-side-banner'); // 배너의 부모 요소
+    const footer = document.querySelector('footer'); // 푸터 요소
+    
+    // 배너의 초기 top 위치값 (스타일 시트에 정의된 값이나 초기 계산값)
+    const initialTopOffset = sideBanner.offsetTop;
+
+    // 스크롤 이벤트 핸들러
+    function handleScroll() {
+        const scrollTop = window.scrollY;
+        const bannerHeight = sideBanner.offsetHeight;
+        const footerTop = footer.offsetTop;
+        const viewportHeight = window.innerHeight;
+
+        // 배너가 푸터와 겹치기 시작하는 최대 스크롤 위치
+        // (푸터 시작점 - 뷰포트 높이 = 푸터가 보이기 시작하는 스크롤 Y값)
+        // (거기서 배너 높이만큼과 약간의 여백을 더 빼줌)
+        const maxScroll = footerTop - bannerHeight - 50; // 50px 여유 공간
+
+        let newTop = scrollTop + initialTopOffset;
+
+        // 만약 스크롤이 최대 위치를 넘어서면, 배너를 푸터 위에 고정
+        if (scrollTop + initialTopOffset > maxScroll) {
+            newTop = maxScroll;
+        }
+
+        // requestAnimationFrame을 사용하여 부드러운 애니메이션 구현
+        window.requestAnimationFrame(() => {
+            sideBanner.style.top = `${newTop}px`;
+        });
+    }
+
+    // 스크롤 이벤트 리스너 등록
+    window.addEventListener('scroll', handleScroll);
+    
+    // 페이지 로드 시 초기 위치 설정
+    handleScroll();
+});

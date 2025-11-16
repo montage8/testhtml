@@ -1,0 +1,68 @@
+﻿@import url(/content/css/common.css);
+@import url(/content/css/layout.css?ver=20250304);
+
+#real-content { width: 100%; }
+#main-visual { background: url(/content/images/main/visual.jpg) no-repeat center top; overflow: hidden; background-attachment: fixed; height: 350px; }
+#main-visual-text { padding-top: 110px; }
+
+#section-popup { position: absolute; width:340px; height:240px; top: 20px; right: 0; background-color: #fff; }
+#section-popup.content-box .content-header { padding-left: 20px; border-bottom: none; }
+#section-popup.content-box .content-body { padding:0; }
+#section-popup .carousel-controls { position:absolute; top:-40px; left:6em; z-index: 1; }
+#section-popup .carousel-indicators { top:200px; z-index: 1; }
+#section-popup .carousel-indicators li a { background-color: rgba(255, 255, 255, 0.4); border: 2px solid rgba(0, 0, 0, 0.8); }
+#section-popup .carousel-indicators li.active a { background-color: rgba(255, 255, 255, 0.6); border: 2px solid rgba(0, 0, 0, 0.8); }
+#section-popup .carousel-controls .carousel-control { background-color:#fff; }
+#section-popup .carousel-controls .carousel-control .glyphicon { color:#0b0b0b; }
+#section-popup .carousel-inner .item a { max-height:190px; overflow:hidden; }
+#section-popup.content-box .more { right: 12px; }
+
+#section-gallary { width: 650px; }
+
+.content-box { position:relative; margin-top: 30px; margin-left: 50px; width:300px; float:left; }
+.content-box.first { margin-left: 0; }
+.content-box.non-padding { width:332px; padding:0; }
+.content-box .content-header { height:50px; line-height:50px; padding:0; border-bottom:solid 1px #63bbd4; }
+.content-box .content-header h2 { font-size:1.3em; }
+.content-box .content-body { position: relative; }
+.content-box .content-body { padding-top:10px; font-size:.9em; }
+.content-box .content-body.split { border-bottom:solid 1px #ccc; }
+.content-box .content-body ul.board li { padding: 5px 0; line-height: 1.6em; list-style-type:disc; margin-left:15px; }
+.content-box .content-body ul.board li a { float: left; }
+.content-box .content-body ul.board li a:hover, .content-box .content-body ul.board li a:focus { border-bottom: 1px dotted #666; }
+.content-box .content-body ul.board li .content { float: left; width: 235px; }
+.content-box .content-body ul.board li .date { float: right; width: 50px; text-align: right; }
+.content-box .more { position:absolute; top:12px; right:0; }
+
+.carousel-controls .carousel-control { width:20px; height:20px; padding:3px; background-color:#4e4e4e; background-color:rgba(0,0,0,0); border-radius:0; font-size:.75em; }
+.carousel-controls .carousel-control .glyphicon { color:#f1f1f1; }
+
+#schedule-roll .carousel-controls { position:absolute; top:-38px; right:30px; left:auto; width:120px; }
+#schedule-roll .carousel-inner .item { max-height:110px; overflow-y:auto; }
+
+#section-gallary ul { margin-top: 15px; }
+#section-gallary li { float: left; margin-left: 25px; }
+#section-gallary li.first { margin-left: 0; }
+#section-gallary li a { display:block; }
+#section-gallary li .thumb { width:198px; height:138px; border: 1px solid #dbdbdb; overflow:hidden; display:block; }
+#section-gallary li .thumb img { width:198px; }
+#section-gallary li .title { display:block; width: 200px; padding-top:15px; font-weight:bold; }
+
+#link-fav { float: right; width: 330px; margin-left: 0; }
+#link-fav li { float:left; width:158px; height:73px; margin-top:10px; margin-right:10px; border: 1px solid #dbdbdb; }
+#link-fav li.back { background-color: #eee; }
+#link-fav li.top { margin-top:0; }
+#link-fav li.even { margin-right:0; }
+#link-fav li a { display:block; position: relative; width: 158px; height: 68px; text-align:center; line-height:normal; }
+#link-fav li a .link-fav-wrap { position: relative; top: 50%; transform: translateY(-50%); }
+#link-fav li a .title { color: #275aaa; font-weight: 900; font-size: 1em; display: block; }
+#link-fav li a .describe { font-weight: normal; font-size: .75em; display: block; margin-top: 5px; padding: 0 5px; }
+
+.button { text-align:center; font-weight:bold; color:#fff; background-color:#595f6a; min-width:145px; border:solid 1px #222; height:45px; line-height:45px; display:inline-block; }
+.button.mini { height:22px; line-height:22px; padding:0 .3em; display:inline-block; min-width:0; font-size: 12px; font-weight: normal; }
+
+#section-banner { margin-top: 50px; width: 100%; }
+#section-banner ul { display: flex; flex-wrap: wrap; justify-content: space-between; }
+#section-banner ul li { margin-bottom: 5px; }
+
+#footer { margin-top: 30px; }

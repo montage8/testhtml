@@ -1,0 +1,18 @@
+﻿$(document).ready(function() {
+    $('.placeholder')
+        .focus(function() {
+            $('label[for=' + $(this).attr('id') + ']').addClass('sr-only');
+        })
+        .blur(function() {
+            if ($(this).val() == "") {
+                $('label[for=' + $(this).attr('id') + ']').removeClass('sr-only');
+            }
+        });
+
+    $('.placeholder').each(function() {
+        var lbl = $('label[for=' + $(this).attr('id') + ']');
+        $(lbl).css('width', ($(this).innerWidth() - 30) + 'px');
+
+        if ($(this).val() != "") { $(lbl).addClass('sr-only'); }
+    });
+});

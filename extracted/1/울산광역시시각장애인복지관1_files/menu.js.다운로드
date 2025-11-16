@@ -1,0 +1,48 @@
+﻿// JavaScript Document
+var menu_show = false;
+
+$(document).ready(function() {
+    $("#top-menu li:first").addClass("first");
+    $("#top-menu li:first ul").addClass("first");
+    $("#top-menu a").bind("focusin", showMenu);
+    $("#top-menu").bind("mouseenter", showMenu);
+    $("#top-menu a").bind("focusout", hideMenu);
+    $("#top-menu").bind("mouseleave", hideMenu);
+/*
+    $("#util-menu li:last").addClass("last");
+    $("#util-menu li:first").addClass("first");
+*/
+});
+
+showMenu = function() {
+    if (menu_show == false) {
+        menu_show = true;
+        //$("#top-menu-back").hide();
+        //$("#top-menu li ul").hide();
+        $("#top-menu-back").removeClass("hidden");
+        $("#top-menu li ul").removeClass("hidden");
+        $("#top-menu li ul").fadeIn();
+        $("#top-menu-back").fadeIn();
+    }
+}
+
+hideMenu = function() {
+    menu_show = false;
+    setTimeout(function() {
+        if (menu_show == false) {
+            //$("#top-menu li ul").addClass("hidden");
+            //$("#top-menu-back").addClass("hidden");
+            //$("#top-menu li ul").slideUp();
+            //$("#top-menu-back").slideUp();
+            $("#top-menu li ul").fadeOut('fast', function() {
+                $(this).addClass("hidden")
+                        .show();                
+            });
+
+            $("#top-menu-back").fadeOut('fast', function() {
+                $(this).addClass("hidden")
+                        .show();
+            });
+        }
+    }, 300);
+}

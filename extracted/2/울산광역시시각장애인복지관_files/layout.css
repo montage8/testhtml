@@ -1,0 +1,153 @@
+﻿@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
+:root {
+    --ck-color-base-border: #6a7282 !important;
+}
+
+#wrap { width:100%; }
+li, p { line-height: 180%;}
+p { padding-bottom: 1.5rem; word-break: keep-all; }
+
+
+/* SVG 객체에 대한 기본 스타일 및 전환 효과 */
+.animated-svg {
+    /* transform 속성이 0.3초 동안 부드럽게 변경되도록 설정 */
+    transition: transform 0.3s ease-in-out;
+}
+
+/* 색상이 변경될 주황색 부분에 대한 기본 스타일 */
+.color-change-part {
+    fill: #fff; /* 기본 색상을 흰색으로 설정 */
+    /* fill(채우기) 색상이 0.3초 동안 부드럽게 변경되도록 설정 */
+    transition: fill 0.3s ease-in-out;
+}
+
+/* 버튼에 마우스를 올리거나 포커스했을 때의 스타일 변경 */
+.svg-wrapper:hover .animated-svg,
+.svg-wrapper:focus .animated-svg {
+    /* SVG를 Y축(수직)으로 -6px 만큼 이동 */
+    transform: translateY(-6px);
+}
+
+.svg-wrapper:hover .color-change-part,
+.svg-wrapper:focus .color-change-part {
+    /* 색상이 변경될 부분의 채우기 색상을 주황색으로 변경 */
+    fill: #ff8100;
+}
+
+.arrow-next {
+    /* 1. 아이콘의 크기를 지정합니다. 이 값만 바꾸면 크기가 조절됩니다. */
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    /* 2. URL-encode된 SVG를 배경 이미지로 사용합니다. */
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='12' cy='12' r='12' fill='white'/%3e%3cpath d='M6 11C5.44772 11 5 11.4477 5 12C5 12.5523 5.44772 13 6 13L6 12L6 11ZM18.7071 12.7071C19.0976 12.3166 19.0976 11.6834 18.7071 11.2929L12.3431 4.92893C11.9526 4.53841 11.3195 4.53841 10.9289 4.92893C10.5384 5.31946 10.5384 5.95262 10.9289 6.34315L16.5858 12L10.9289 17.6569C10.5384 18.0474 10.5384 18.6805 10.9289 19.0711C11.3195 19.4616 11.9526 19.4616 12.3431 19.0711L18.7071 12.7071ZM6 12L6 13L18 13L18 12L18 11L6 11L6 12Z' fill='black'/%3e%3c/svg%3e");
+    
+    /* 3. 배경 이미지가 잘 표시되도록 관련 속성을 설정합니다. */
+    background-repeat: no-repeat; /* 반복 없음 */
+    background-position: center;  /* 중앙 정렬 */
+    background-size: contain;     /* 요소 크기에 맞춰 이미지 비율 유지 */
+
+    /* 부드러운 전환 효과 (선택 사항) */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Swiper.js 버튼 기본 스타일을 Tailwind에 맞게 커스텀 */
+.swiper {
+    padding: 8px !important;
+}
+
+.swiper-button-prev {
+    left: calc(var(--spacing) * -10) !important;
+}
+.swiper-button-next {
+    right: calc(var(--spacing) * -10) !important;
+}
+.swiper-button-prev,
+.swiper-button-next {
+    width: calc(var(--spacing) * 12) !important;
+    height: calc(var(--spacing) * 12) !important;
+    color: var(--color-slate-700) !important;
+    transition-duration: var(--tw-duration, var(--default-transition-duration)) !important;
+}
+
+/* Footer */
+.contact-info-icons li {
+    display: flex;
+    align-items: center;
+}
+.contact-info-icons svg {
+    width: 24px; /* 아이콘이 차지할 공간 */
+    text-align: center;
+    margin-right: 0.75rem;
+    color: #6B7280; /* 아이콘 색상 */
+    font-size: 1.1rem;
+}
+
+.split-bar > li + li::before {
+    content: ''; /* 가상 요소 생성을 위해 필수 */
+    display: inline-block;
+
+    /* 구분선 디자인 */
+    width: 1px;
+    height: 1rem; /* 16px */
+    background-color: #D1D5DC; /* tailwind의 slate-300 색상 */
+    
+    /* 위치 및 여백 */
+    margin-right: 1rem; /* 구분선과 뒤따르는 텍스트 사이의 여백 */
+    margin-left: 1rem; /* 구분선 앞의 텍스트 사이의 여백 */
+    transform: translateY(2px); /* 텍스트와 수직 중앙을 미세 조정 */
+}
+
+.ck-content.ck-editor__editable {
+    height: 400px;
+}
+
+.ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items {
+    flex-wrap: wrap !important;
+}
+
+.post-content h1, .ck-content h1 { font-size: 2.5rem; font-weight: bold; margin-top: 2.5rem; margin-bottom: 2rem;}
+.post-content h2, .ck-content h2 { font-size: 2.25rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem;}
+.post-content h3, .ck-content h3 { font-size: 2rem; font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem;}
+.post-content h4, .ck-content h4 { font-size: 1.75rem; font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem;}
+.post-content h5, .ck-content h5 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem;}
+.post-content h6, .ck-content h6 { font-size: 1.25rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem;}
+
+#sub-menu.is-sticky {
+    position: fixed !important;
+    top: 0 !important;
+    max-width: 1536px;
+    z-index: 99;
+    padding: 4px 0 8px 0 !important;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* md(768px) 이상의 화면 크기에서만 적용됩니다. */
+@media (min-width: 768px) {
+    /* 
+      .desktop-tabs의 자식인 li 바로 뒤에 오는 li를 선택합니다.
+      이 '인접 형제 선택자(+)' 덕분에 첫 번째 li에는 구분자가 생기지 않습니다.
+    */
+    .desktop-tabs > li + li::before {
+        content: ''; /* 가상 요소 생성을 위해 필수 */
+        display: inline-block;
+
+        /* 구분선 디자인 */
+        width: 1px;
+        height: 1rem; /* 16px */
+        background-color: #cbd5e0; /* tailwind의 slate-300 색상 */
+        
+        /* 위치 및 여백 */
+        margin-right: 1rem; /* 구분선과 뒤따르는 텍스트 사이의 여백 */
+        transform: translateY(2px); /* 텍스트와 수직 중앙을 미세 조정 */
+    }
+
+    .split-bar > li + li::before {
+    
+        /* 위치 및 여백 */
+        margin-right: 1.25rem; /* 구분선과 뒤따르는 텍스트 사이의 여백 */
+        margin-left: 1.25rem; /* 구분선 앞의 텍스트 사이의 여백 */
+    }
+}
