@@ -1,0 +1,92 @@
+/*
+window.addEventListener('beforeunload', function(event) {
+  // Display a confirmation message
+  const confirmationMessage = "Are you sure you want to leave this page?";
+  
+  // Set the returnValue property of the event to display the alert
+  event.returnValue = confirmationMessage;
+  
+  // For some browsers, setting returnValue is not sufficient
+  return confirmationMessage;
+});
+*/
+/**********************************************
+*	~을/~를 덧붙이기
+**********************************************/
+// 맨 마지막 글자에 받침이 있는지 찾아서 있다면 true, 없다면 false 를 반환
+function isEndWithConsonant(korStr) {
+    const finalChrCode = korStr.charCodeAt(korStr.length - 1)
+    // 0 = 받침 없음, 그 외 = 받침 있음
+    const finalConsonantCode = (finalChrCode - 44032) % 28
+    return finalConsonantCode !== 0
+};
+// 을/를 덧붙히기
+String.prototype.appendEulReul = function() {
+    return this + (isEndWithConsonant(this) ? "을" : "를")
+};
+
+
+/**********************************************
+*	팝업창을 띄운다.
+**********************************************/
+function popup(url, width=720, height=480, name="new_window") {
+    const popupX = Math.ceil(( window.screen.width - width )/2);
+    const popupY = Math.ceil(( window.screen.height - height )/2);
+    width = width == "max" ? screen.width : width;
+    height = height == "max" ? screen.height : height;
+    const feature = `toolbar=no,resizable=no,scrollbars=no,status=no,location=no,resize=no,menubar=no,directories=no,copyhistory=0,width=${width},height=${height},top=${popupY},left=${popupX}`;
+    window.open(url, name, feature);
+
+    return false;
+}
+
+/**********************************************
+*	풀스크린 팝업창을 띄운다.
+**********************************************/
+function popup_fullscreen(url, name="new_full_window") {
+    window.open(url, name, `width=${screen.width},height=${screen.height},fullscreen="yes"`);
+}
+
+
+function parent_refresh_n_close() {
+    opener.location.reload();
+    self.close();
+}
+
+
+HTMLSelectElement.prototype.clear = function() {
+    for (let i=this.options.length - 1; i>=0; i--) {
+        this.options.item(i).remove();
+    }
+}
+
+HTMLSelectElement.prototype.init = function(text, value) {
+    this.clear();
+    const option = document.createElement("option");
+    option.text = text;
+    option.value = value;
+    this.options.add(option);
+}
+
+/** 전달받는 요소의 절대좌표 y 구해서 화면에 해당 요소가 보이지 않을 경우 요소가 있는 위치로 화면을 스크롤 시킨다. */
+function scrollAbsolutePosition(obj) {
+    const relativeTop = obj.getBoundingClientRect().top;
+    if (relativeTop < 0) {
+        window.scrollTo(0, window.pageYOffset + relativeTop);
+    }
+}
+
+/** 전화번호 아이픈 적용 */
+const autoPhoneHyphen = (e) => {
+    e.target.value = e.target.value
+        .replace(/[^0-9]/g, '')
+        .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+}
+
+
+/** 날짜 아이픈 적용 */
+const autoDateHyphen = (e) => {
+    e.target.value = e.target.value
+        .replace(/[^0-9]/g, '')
+        .replace(/^(\d{4})(\d{2})(\d{2})$/, `$1-$2-$3`);
+}
